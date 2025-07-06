@@ -1,16 +1,22 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { ShoppingCart, Plus, User, LogOut } from 'lucide-react';
+import { ShoppingCart, Plus, User, LogOut, LogIn } from 'lucide-react';
 import type { RootState } from '../store';
-import { login, logout } from '../store/slices/authSlice';
+import { logout } from '../store/slices/authSlice';
+import { authService } from '../services/auth';
 import { Button } from './ui/button';
 
 function Navbar() {
   const dispatch = useDispatch();
   const { username, role } = useSelector((state: RootState) => state.auth);
 
-  const handleLogin = (username: string, role: 'USER' | 'ADMIN') => {
-    dispatch(login({ username, role }));
+  const handleLogout = async () => {
+    try {
+      await authService.logout();
+      dispatch(logout());
+    } catch (error) {
+      dispatch(logout());
+    }
   };
 
   return (
@@ -36,7 +42,7 @@ function Navbar() {
                 <span>{username} ({role})</span>
               </div>
               <Button
-                onClick={() => dispatch(logout())}
+                onClick={handleLogout}
                 variant="outline"
                 size="sm"
               >
@@ -45,21 +51,12 @@ function Navbar() {
               </Button>
             </div>
           ) : (
-            <div className="flex items-center space-x-2">
-              <Button
-                onClick={() => handleLogin('user', 'USER')}
-                variant="outline"
-                size="sm"
-              >
-                Login as User
-              </Button>
-              <Button
-                onClick={() => handleLogin('admin', 'ADMIN')}
-                size="sm"
-              >
-                Login as Admin
-              </Button>
-            </div>
+            <Button asChild variant="outline" size="sm">
+              <Link to="/signin" className="flex items-center space-x-2">
+                <LogIn className="h-4 w-4" />
+                <span>Sign In</span>
+              </Link>
+            </Button>
           )}
         </div>
       </div>

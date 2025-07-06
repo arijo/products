@@ -20,10 +20,11 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/h2-console/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/products", "/products/**").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/products").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/products/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/products/**").hasRole("ADMIN")
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/products", "/api/products/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/products").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/products/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/products/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .httpBasic(httpBasic -> {
                 }) // Use lambda-style configuration

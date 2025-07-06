@@ -10,7 +10,11 @@ interface ProtectedRouteProps {
 function ProtectedRoute({ children, requiredRole }: ProtectedRouteProps) {
   const { role } = useSelector((state: RootState) => state.auth);
 
-  if (!role || role !== requiredRole) {
+  if (!role) {
+    return <Navigate to="/signin" replace />;
+  }
+  
+  if (role !== requiredRole) {
     return <Navigate to="/products" replace />;
   }
 

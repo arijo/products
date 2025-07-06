@@ -4,6 +4,7 @@ import ProductList from './pages/ProductList';
 import ProductCreate from './pages/ProductCreate';
 import ProductEdit from './pages/ProductEdit';
 import NotFound from './pages/NotFound';
+import Signin from './pages/Signin';
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
       <main className="container mx-auto px-4 py-8">
         <Routes>
           <Route path="/" element={<ProductList />} />
+          <Route path="/signin" element={<Signin />} />
           <Route path="/products" element={<ProductList />} />
           <Route
             path="/products/new"

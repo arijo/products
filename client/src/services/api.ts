@@ -8,10 +8,17 @@ const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-  const username = 'admin';
-  const password = 'password';
-  const auth = btoa(`${username}:${password}`);
-  config.headers.Authorization = `Basic ${auth}`;
+  const authState = localStorage.getItem('auth');
+  if (authState) {
+    try {
+      const { username } = JSON.parse(authState);
+      const password = 'password';
+      const auth = btoa(`${username}:${password}`);
+      config.headers.Authorization = `Basic ${auth}`;
+    } catch (error) {
+      console.error('Error parsing auth state:', error);
+    }
+  }
   return config;
 });
 
